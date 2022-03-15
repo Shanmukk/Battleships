@@ -4,6 +4,7 @@ Name:
 Roll No:
 """
 
+from pickle import LIST
 import battleship_tests as test
 
 project = "Battleship" # don't edit this
@@ -62,8 +63,10 @@ Parameters: int ; int
 Returns: 2D list of ints
 '''
 def emptyGrid(rows, cols):
-    return
-
+   # g = [[1]*(cols)]*(rows)
+    #return g 
+    arr=[[1]*(cols) for _ in range(rows)]
+    return (arr)
 
 '''
 createShip()
@@ -268,6 +271,7 @@ def runSimulation(w, h):
 
 # This code runs the test cases to check your work
 if __name__ == "__main__":
+    test.testEmptyGrid()
 
     ## Finally, run the simulation to test it manually ##
     # runSimulation(500, 500)
