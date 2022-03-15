@@ -73,7 +73,22 @@ Parameters: no parameters
 Returns: 2D list of ints
 '''
 def createShip():
-    return
+    len_ship = 3
+    orientation = random.randint(0,1)
+    if orientation == 0:
+        row_ship = [random.randint(1,8)]*len_ship
+        col = random.randint(1,8 - len_ship)
+        col_ship = list(range(col, col + len_ship))
+        c = zip(row_ship, col_ship)
+    else:
+        col_ship = [random.randint(1,8)]*len_ship
+        row = random.randint(1,8 - len_ship)
+        row_ship = list(range(row, row + len_ship))
+        c = zip(row_ship, col_ship)
+    return list(c)
+
+
+    #return
 
 
 '''
@@ -271,6 +286,7 @@ def runSimulation(w, h):
 # This code runs the test cases to check your work
 if __name__ == "__main__":
     test.testEmptyGrid()
+    test.testCreateShip()
 
     ## Finally, run the simulation to test it manually ##
     # runSimulation(500, 500)
