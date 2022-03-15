@@ -77,13 +77,13 @@ def createShip():
     orientation = random.randint(0,1)
     if orientation == 0:
         row_ship = [random.randint(1,8)]*len_ship
-        col = random.randint(1,8 - len_ship)
-        col_ship = list(range(col, col + len_ship))
+        col = random.randint(1,8 - 1)
+        col_ship = list(range(col -1, col + 2))
         c = zip(row_ship, col_ship)
     else:
         col_ship = [random.randint(1,8)]*len_ship
-        row = random.randint(1,8 - len_ship)
-        row_ship = list(range(row, row + len_ship))
+        row = random.randint(1,8 - 1)
+        row_ship = list(range(row - 1, row + 2))
         c = zip(row_ship, col_ship)
     return list(c)
 
@@ -97,7 +97,17 @@ Parameters: 2D list of ints ; 2D list of ints
 Returns: bool
 '''
 def checkShip(grid, ship):
-    return
+    count=0
+    for i in range(len(ship)):
+        s = ship[i] 
+        row=s[0]
+        col=s[1] 
+        if(grid[row][col]!=1):
+            count = 1 
+    if(count==1): 
+        return False 
+    return True
+
 
 
 '''
@@ -287,6 +297,7 @@ def runSimulation(w, h):
 if __name__ == "__main__":
     test.testEmptyGrid()
     test.testCreateShip()
+    test.testCheckShip()
 
     ## Finally, run the simulation to test it manually ##
     # runSimulation(500, 500)
