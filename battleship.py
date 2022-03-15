@@ -67,8 +67,8 @@ def emptyGrid(rows, cols):
     #return g 
     #a=10 
     #b=20 
-    arr=[[1]*(cols) for _ in range(rows)]
-    return (arr)
+    list=[[1]*(cols) for _ in range(rows)]
+    return (list)
     #done 
     
 
