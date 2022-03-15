@@ -65,8 +65,8 @@ Returns: 2D list of ints
 def emptyGrid(rows, cols):
    # g = [[1]*(cols)]*(rows)
     #return g 
-    a=10 
-    b=20 
+    #a=10 
+    #b=20 
     arr=[[1]*(cols) for _ in range(rows)]
     return (arr)
     #done 
