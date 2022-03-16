@@ -67,7 +67,7 @@ def emptyGrid(rows, cols):
     #return g 
     #a=10 
     #b=20 
-    list=[[1]*(cols) for _ in range(rows)]
+    list=[[1]*(cols) for row in range(rows)]
     return (list)
     #done 
     
@@ -108,16 +108,34 @@ Parameters: 2D list of ints ; 2D list of ints
 Returns: bool
 '''
 def checkShip(grid, ship):
-    return
-
-
+    count = 0 
+    i=0 
+    while i<len(ship): 
+        l = ship[i] 
+        l1=l[0] 
+        l2=l[1] 
+        if(grid[l1][l2]!=EMPTY_UNCLICKED): 
+            count = 1 
+        i = i+1 
+    if(count==0): 
+        return True
+    return  False
 '''
 addShips(grid, numShips)
 Parameters: 2D list of ints ; int
 Returns: 2D list of ints
 '''
 def addShips(grid, numShips):
-    return
+#   count=0 
+#    while count<numShips: 
+#        ship = createShip() 
+#        if checkShip(grid,ship) == True: 
+#            for coordinates in ship: 
+#                l1 = coordinates[0] 
+#                l2 = coordinates[1] 
+#                grid[l1][l2] = SHIP_UNCLICKED 
+#            count = count + 1 
+#    return grid
 
 
 '''
@@ -298,6 +316,8 @@ def runSimulation(w, h):
 if __name__ == "__main__":
     test.testEmptyGrid()
     test.testCreateShip()
+    test.testCheckShip()
+    test.testAddShips()
 
     ## Finally, run the simulation to test it manually ##
     # runSimulation(500, 500)
