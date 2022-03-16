@@ -102,7 +102,7 @@ def checkShip(grid, ship):
         s = ship[i] 
         row=s[0]
         col=s[1] 
-        if(grid[row][col]!=1):
+        if(grid[row][col]!=EMPTY_UNCLICKED):
             count = 1 
     if(count==1): 
         return False 
