@@ -27,16 +27,18 @@ Returns: None
 '''
 def makeModel(data):
 #    Dict={"no.of rows&cols":10,"board size":500,"no.of ships":5,"cell size"}
-    data["no.of rows&cols"]=10 
+    data["no.of rows"]=10
+    data["no.of cols"]=10
     data["board size"]=500
     data["no.of ships"]=5
-    data["cell size"]=data["board size"]/data["no.of rows&cols"]
-    computer=emptyGrid(data["no.of rows&cols"],data["no.of rows&cols"])
-    user=emptyGrid(data["no.of rows&cols"],data["no.of rows&cols"])
-    computer=addShips(computer,data["no.of ships"])
-    data["user"]=user
-    data["computer"]=computer
-    return data
+    data["cell size"]=data["board size"]/data["no.of rows"]
+    data["computer"]=emptyGrid(data["no.of rows"],data["no.of cols"])
+#    data["user"]=emptyGrid(data["no.of rows"],data["no.of cols"])
+    data["user"]=test.testGrid()
+    data["computer"]=addShips(data["computer"],data["no.of ships"])
+#    data["user"]=user
+#   data["computer"]=computer
+    return 
 
 
 '''
@@ -45,6 +47,8 @@ Parameters: dict mapping strs to values ; Tkinter canvas ; Tkinter canvas
 Returns: None
 '''
 def makeView(data, userCanvas, compCanvas):
+    drawGrid(data,userCanvas,data["user"],showShips=True)
+    drawGrid(data,compCanvas,data["computer"],showShips=True)
     return
 
 
@@ -153,8 +157,30 @@ drawGrid(data, canvas, grid, showShips)
 Parameters: dict mapping strs to values ; Tkinter canvas ; 2D list of ints ; bool
 Returns: None
 '''
-def drawGrid(data, canvas, grid, showShips):
+def drawGrid(data, canvas, grid, showShips): 
+    for i in range(data["no.of rows"]):
+        for j in range(data["no.of cols"]):
+                    if (grid[i][j]==SHIP_UNCLICKED):
+                        canvas.create_rectangle(j*data["cell size"],i*data["cell size"],data["cell size"]*(j+1),data["cell size"]*(i+1),fill="yellow")
+                    else:
+                        canvas.create_rectangle(j*data["cell size"],i*data["cell size"],data["cell size"]*(j+1),data["cell size"]*(i+1),fill="blue")
+
+#canvas.create_rectangle(0*(i+1),0*(j+1),50*(i+1),50*(j+1))
+"""def draw(canvas): 
+        pass 
+    def makeCanvas(w,h): 
+        root = tk.Tk() 
+        canvas = tk.Canvas(root, width=w, height=h) 
+        canvas.configure(bd=0, highlightthickness=0) 
+        for i in range(10):
+            canvas.create_line(data["board size"]*i,0,50*i,500,fill)
+            canvas.create_line(0,50*i,500,50*i)
+        canvas.pack() 
+        draw(canvas) 
+        root.mainloop() 
+    makeCanvas(500,500)
     return
+    testGrid(Canvas)"""
 
 
 ### WEEK 2 ###
@@ -329,6 +355,8 @@ if __name__ == "__main__":
     test.testCheckShip()
     test.testAddShips()
     test.testMakeModel()
+    test.testDrawGrid()
+
 
     ## Finally, run the simulation to test it manually ##
-    # runSimulation(500, 500)
+    runSimulation(500, 500)
