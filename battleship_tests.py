@@ -88,7 +88,7 @@ def testMakeModel():
     values = data.values()
     assert(10 in values) # have you stored the number of rows and cols?
     assert(500 in values) # have you stored the board size?
-    assert(5 in values) # have you stored the number of ships?
+    assert(5 in values) # have you stored the num ber of ships?
     listCount = 0
     for value in values:
         if type(value) == list:
