@@ -164,7 +164,19 @@ Parameters: 2D list of ints
 Returns: bool
 '''
 def isVertical(ship):
-    return
+    l = [ ] 
+    col = ship[0][1] 
+    count = 0 
+    for i in range(len(ship)): 
+        if(ship[i][1] == col): 
+            count += 1 
+            l.append(ship[i][0])  
+            if count == (len(ship)): 
+                if max(l)-min(l) == 2: 
+                    return True 
+                return False 
+        else:
+            return False
 
 
 '''
@@ -173,7 +185,20 @@ Parameters: 2D list of ints
 Returns: bool
 '''
 def isHorizontal(ship):
-    return
+    l = [ ] 
+    row = ship[0][0]
+    count = 0                         
+    for i in range(len(ship)): 
+        if(ship[i][0] == row): 
+            count += 1 
+            l.append(ship[i][1])   
+            if count == (len(ship)): 
+                if max(l)-min(l) == 2: 
+                    return True 
+                return False
+        else:
+            return False
+   
 
 
 '''
@@ -329,6 +354,8 @@ if __name__ == "__main__":
     test.testAddShips()
     test.testMakeModel()
     test.testDrawGrid()
+    test.testIsVertical()
+    test.testIsHorizontal()
 
     ## Finally, run the simulation to test it manually ##
     runSimulation(500, 500)
