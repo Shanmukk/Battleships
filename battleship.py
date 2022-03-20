@@ -32,6 +32,7 @@ def makeModel(data):
     data["numShips"]=5
     #data["temp_ship"] = test.testShip()
     data["temp_ship"] = []
+    data["user_ships"] = 0
     user_board = emptyGrid(data["rows"], data["col"])
     #user_board = test.testGrid()
     com_board = emptyGrid(data["rows"], data["col"])
@@ -155,7 +156,6 @@ def drawGrid(data, canvas, grid, showShips):
             canvas.create_rectangle(d*data["cell_size"],i*data["cell_size"],data["cell_size"]*(d+1),data["cell_size"]*(i+1),fill="blue")
             if (grid[i][d]==SHIP_UNCLICKED): 
                 canvas.create_rectangle(d*data["cell_size"],i*data["cell_size"],data["cell_size"]*(d+1),data["cell_size"]*(i+1),fill="yellow") 
-            
     return
 
 
@@ -221,9 +221,9 @@ Parameters: dict mapping strs to values ; Tkinter canvas; 2D list of ints
 Returns: None
 '''
 def drawShip(data, canvas, ship):
-        for i in ship:
-            canvas.create_rectangle(i[1]*data["cell_size"],i[0]*data["cell_size"],data["cell_size"]*(i[1]+1),data["cell_size"]*(i[0]+1),fill="white")
-        return
+    for i in ship:
+        canvas.create_rectangle(i[1]*data["cell_size"],i[0]*data["cell_size"],data["cell_size"]*(i[1]+1),data["cell_size"]*(i[0]+1),fill="white")
+    return
 
 
 '''
@@ -232,7 +232,7 @@ Parameters: 2D list of ints ; 2D list of ints
 Returns: bool
 '''
 def shipIsValid(grid, ship):
-    return
+    return False
 
 
 '''
@@ -240,8 +240,9 @@ placeShip(data)
 Parameters: dict mapping strs to values
 Returns: None
 '''
-def placeShip(data):
+def placeShip(data): 
     return
+    
 
 
 '''
@@ -364,7 +365,8 @@ if __name__ == "__main__":
     test.testIsVertical()
     test.testIsHorizontal()
     test.testGetClickedCell()
-    test.testDrawShip()
+    #test.testDrawShip()
+    #test.testShipIsValid()
 
     ## Finally, run the simulation to test it manually ##
     runSimulation(500, 500)
