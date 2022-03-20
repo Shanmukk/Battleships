@@ -25,8 +25,19 @@ Parameters: dict mapping strs to values
 Returns: None
 '''
 def makeModel(data):
-    return
-
+    data["rows"]=10
+    data["col"]=10
+    data["board_size"]=500
+    data["cell_size"]=50
+    data["numShips"]=5
+    user_board = emptyGrid(data["rows"], data["col"])
+    #user_board = test.testGrid()
+    com_board = emptyGrid(data["rows"], data["col"])
+    com_board = addShips(com_board, data["numShips"])
+    data["user_board"]=user_board
+    data["com_board"]=com_board
+    return 
+    
 
 '''
 makeView(data, userCanvas, compCanvas)
@@ -34,6 +45,8 @@ Parameters: dict mapping strs to values ; Tkinter canvas ; Tkinter canvas
 Returns: None
 '''
 def makeView(data, userCanvas, compCanvas):
+    drawGrid(data,userCanvas,data["user_board"],showShips=True) 
+    drawGrid(data,compCanvas,data["com_board"],showShips=True) 
     return
 
 
@@ -62,7 +75,9 @@ Parameters: int ; int
 Returns: 2D list of ints
 '''
 def emptyGrid(rows, cols):
-    return
+    arr=[[1]*(cols) for _ in range(rows)] 
+    return (arr)
+    
 
 
 '''
@@ -71,7 +86,22 @@ Parameters: no parameters
 Returns: 2D list of ints
 '''
 def createShip():
-    return
+    len_ship = 3
+    orientation = random.randint(0,1)
+    if orientation == 0:
+        row_ship = [random.randint(1,8)]*len_ship
+        col = random.randint(1,8 - 1)
+        col_ship = list(range(col -1, col + 2))
+        c = zip(row_ship, col_ship)
+    else:
+        col_ship = [random.randint(1,8)]*len_ship
+        row = random.randint(1,8 - 1)
+        row_ship = list(range(row - 1, row + 2))
+        c = zip(row_ship, col_ship)
+    return list(c)
+
+
+    #return
 
 
 '''
@@ -80,7 +110,17 @@ Parameters: 2D list of ints ; 2D list of ints
 Returns: bool
 '''
 def checkShip(grid, ship):
-    return
+    count=0
+    for i in range(len(ship)):
+        s = ship[i] 
+        row=s[0]
+        col=s[1] 
+        if(grid[row][col]!=EMPTY_UNCLICKED):
+            count = 1 
+    if(count==1): 
+        return False 
+    return True
+
 
 
 '''
@@ -89,7 +129,16 @@ Parameters: 2D list of ints ; int
 Returns: 2D list of ints
 '''
 def addShips(grid, numShips):
-    return
+    count=0 
+    while count<numShips: 
+        ship = createShip() 
+        if checkShip(grid,ship) == True: 
+            for i in ship: 
+                r = i[0] 
+                c = i[1] 
+                grid[r][c] = SHIP_UNCLICKED 
+            count = count + 1 
+    return grid
 
 
 '''
@@ -98,6 +147,12 @@ Parameters: dict mapping strs to values ; Tkinter canvas ; 2D list of ints ; boo
 Returns: None
 '''
 def drawGrid(data, canvas, grid, showShips):
+    for i in range(data["rows"]):
+        for d in range(data["col"]):
+            canvas.create_rectangle(d*data["cell_size"],i*data["cell_size"],data["cell_size"]*(d+1),data["cell_size"]*(i+1),fill="blue")
+            if (grid[i][d]==SHIP_UNCLICKED): 
+                canvas.create_rectangle(d*data["cell_size"],i*data["cell_size"],data["cell_size"]*(d+1),data["cell_size"]*(i+1),fill="yellow") 
+            
     return
 
 
@@ -109,7 +164,19 @@ Parameters: 2D list of ints
 Returns: bool
 '''
 def isVertical(ship):
-    return
+    l = [ ] 
+    col = ship[0][1] 
+    count = 0 
+    for i in range(len(ship)): 
+        if(ship[i][1] == col): 
+            count += 1 
+            l.append(ship[i][0])  
+            if count == (len(ship)): 
+                if max(l)-min(l) == 2: 
+                    return True 
+                return False 
+        else:
+            return False
 
 
 '''
@@ -118,7 +185,20 @@ Parameters: 2D list of ints
 Returns: bool
 '''
 def isHorizontal(ship):
-    return
+    l = [ ] 
+    row = ship[0][0]
+    count = 0                         
+    for i in range(len(ship)): 
+        if(ship[i][0] == row): 
+            count += 1 
+            l.append(ship[i][1])   
+            if count == (len(ship)): 
+                if max(l)-min(l) == 2: 
+                    return True 
+                return False
+        else:
+            return False
+   
 
 
 '''
@@ -268,6 +348,14 @@ def runSimulation(w, h):
 
 # This code runs the test cases to check your work
 if __name__ == "__main__":
+    test.testEmptyGrid()
+    test.testCreateShip()
+    test.testCheckShip()
+    test.testAddShips()
+    test.testMakeModel()
+    test.testDrawGrid()
+    test.testIsVertical()
+    test.testIsHorizontal()
 
     ## Finally, run the simulation to test it manually ##
-    # runSimulation(500, 500)
+    runSimulation(500, 500)
