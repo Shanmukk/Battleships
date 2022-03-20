@@ -30,6 +30,8 @@ def makeModel(data):
     data["board_size"]=500
     data["cell_size"]=50
     data["numShips"]=5
+    #data["temp_ship"] = test.testShip()
+    data["temp_ship"] = []
     user_board = emptyGrid(data["rows"], data["col"])
     #user_board = test.testGrid()
     com_board = emptyGrid(data["rows"], data["col"])
@@ -46,7 +48,8 @@ Returns: None
 '''
 def makeView(data, userCanvas, compCanvas):
     drawGrid(data,userCanvas,data["user_board"],showShips=True) 
-    drawGrid(data,compCanvas,data["com_board"],showShips=True) 
+    drawGrid(data,compCanvas,data["com_board"],showShips=True)
+    drawShip(data,userCanvas,data["temp_ship"]) 
     return
 
 
@@ -172,7 +175,7 @@ def isVertical(ship):
             count += 1 
             l.append(ship[i][0])  
             if count == (len(ship)): 
-                if max(l)-min(l) == 2: 
+                if max(l)-min(l) == len(ship)-1: 
                     return True 
                 return False 
         else:
@@ -207,7 +210,9 @@ Parameters: dict mapping strs to values ; mouse event object
 Returns: list of ints
 '''
 def getClickedCell(data, event):
-    return
+    x,y = int(event.x / data["cell_size"]), int(event.y / data["cell_size"]) 
+    return [y,x]
+    
 
 
 '''
@@ -216,7 +221,9 @@ Parameters: dict mapping strs to values ; Tkinter canvas; 2D list of ints
 Returns: None
 '''
 def drawShip(data, canvas, ship):
-    return
+        for i in ship:
+            canvas.create_rectangle(i[1]*data["cell_size"],i[0]*data["cell_size"],data["cell_size"]*(i[1]+1),data["cell_size"]*(i[0]+1),fill="white")
+        return
 
 
 '''
@@ -356,6 +363,8 @@ if __name__ == "__main__":
     test.testDrawGrid()
     test.testIsVertical()
     test.testIsHorizontal()
+    test.testGetClickedCell()
+    test.testDrawShip()
 
     ## Finally, run the simulation to test it manually ##
     runSimulation(500, 500)
