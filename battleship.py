@@ -26,17 +26,19 @@ Parameters: dict mapping strs to values
 Returns: None
 '''
 def makeModel(data):
-#    Dict={"no.of rows&cols":10,"board size":500,"no.of ships":5,"cell size"}
     data["no.of rows"]=10
     data["no.of cols"]=10
     data["board size"]=500
     data["no.of ships"]=5
+  #  data["temp_ship"]=test.testShip()
+    data["temp_ship"]=[]
     data["cell size"]=data["board size"]/data["no.of rows"]
+    data["no.of_userships"]=0
     data["computer"]=emptyGrid(data["no.of rows"],data["no.of cols"])
-#    data["user"]=emptyGrid(data["no.of rows"],data["no.of cols"])
-    data["user"]=test.testGrid()
+    data["user"]=emptyGrid(data["no.of rows"],data["no.of cols"])
+#    data["user"]=test.testGrid()
     data["computer"]=addShips(data["computer"],data["no.of ships"])
-#    data["user"]=user
+    #data["user"]=user
 #   data["computer"]=computer
     return 
 
@@ -49,8 +51,8 @@ Returns: None
 def makeView(data, userCanvas, compCanvas):
     drawGrid(data,userCanvas,data["user"],showShips=True)
     drawGrid(data,compCanvas,data["computer"],showShips=True)
+    #drawShip(data,userCanvas,data["temp_ship"])
     return
-
 
 '''
 keyPressed(data, events)
@@ -191,7 +193,24 @@ Parameters: 2D list of ints
 Returns: bool
 '''
 def isVertical(ship):
-    return
+#lst=[ [2, 1], [0, 1], [1, 1] ]
+    lst1=[ ]
+    column=ship[0][1] 
+    count=0
+    for i in range (len(ship)):
+        if (ship[i][1] == column):
+            count+=1
+            lst1.append(ship[i][0])
+        else:
+            return False
+#    print(lst1)
+    if (count==len(ship)):
+        if((max(lst1)-min(lst1))==(len(ship))-1):
+            return True
+        else: 
+            return False
+#    return
+
 
 
 '''
@@ -200,8 +219,24 @@ Parameters: 2D list of ints
 Returns: bool
 '''
 def isHorizontal(ship):
+#[ [1, 0], [1, 1], [1, 2] ]
+    lst1=[ ]
+    row=ship[0][0] #1
+    count=0
+    for i in range (len(ship)):
+        if (ship[i][0] == row):
+            count+=1
+            lst1.append(ship[i][1])
+        else:
+            return False
+#    print(lst1)
+    if (count==len(ship)):
+        if((max(lst1)-min(lst1))==(len(ship))-1):
+            return True
+        else: 
+            return False
     return
-
+    
 
 '''
 getClickedCell(data, event)
@@ -209,7 +244,8 @@ Parameters: dict mapping strs to values ; mouse event object
 Returns: list of ints
 '''
 def getClickedCell(data, event):
-    return
+    return 
+
 
 
 '''
@@ -227,7 +263,8 @@ Parameters: 2D list of ints ; 2D list of ints
 Returns: bool
 '''
 def shipIsValid(grid, ship):
-    return
+    return   
+
 
 
 '''
@@ -237,7 +274,7 @@ Returns: None
 '''
 def placeShip(data):
     return
-
+#data["boarduser"][data["temporaryShip"][i][0]][data["temporaryShip"][i][1]]=SHIP_UNCLICKED
 
 '''
 clickUserBoard(data, row, col)
@@ -245,7 +282,7 @@ Parameters: dict mapping strs to values ; int ; int
 Returns: None
 '''
 def clickUserBoard(data, row, col):
-    return
+    return 
 
 
 ### WEEK 3 ###
@@ -350,13 +387,18 @@ def runSimulation(w, h):
 
 # This code runs the test cases to check your work
 if __name__ == "__main__":
+
     test.testEmptyGrid()
     test.testCreateShip()
     test.testCheckShip()
     test.testAddShips()
     test.testMakeModel()
     test.testDrawGrid()
+    test.testIsVertical()
+    test.testIsHorizontal()
 
+    
+    
 
     ## Finally, run the simulation to test it manually ##
     runSimulation(500, 500)
