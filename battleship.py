@@ -36,7 +36,7 @@ def makeModel(data):
     data["no.of_userships"]=0
     data["computer"]=emptyGrid(data["no.of rows"],data["no.of cols"])
     data["user"]=emptyGrid(data["no.of rows"],data["no.of cols"])
-    data["user"]=test.testGrid()
+    #data["user"]=test.testGrid()
     data["computer"]=addShips(data["computer"],data["no.of ships"])
     #data["user"]=user
 #   data["computer"]=computer
@@ -274,7 +274,10 @@ Parameters: 2D list of ints ; 2D list of ints
 Returns: bool
 '''
 def shipIsValid(grid, ship):
-    return   
+    if(len(ship)==3):
+        if(checkShip(grid,ship) and isVertical(ship) or isHorizontal(ship)):
+            return True
+    return False
 
 
 
@@ -284,6 +287,14 @@ Parameters: dict mapping strs to values
 Returns: None
 '''
 def placeShip(data):
+    if(shipIsValid(data["user"],data["temp_ship"])):
+        for i in range(len(data["temp_ship"])):
+            data["user"][data["temp_ship"][i][0]][data["temp_ship"][i][1]] = SHIP_UNCLICKED
+            #data["user_board"]=data
+        data["no.of_userships"]+=1  
+    else:
+        print("Ship is not valid")
+    data["temp_ship"]=[]
     return
 #data["boarduser"][data["temporaryShip"][i][0]][data["temporaryShip"][i][1]]=SHIP_UNCLICKED
 
@@ -293,6 +304,16 @@ Parameters: dict mapping strs to values ; int ; int
 Returns: None
 '''
 def clickUserBoard(data, row, col):
+    if data["no.of_userships"]==5:
+        print("You can start the game")
+        return
+    for i in (data["temp_ship"]):
+        if([row,col] == i):
+            return
+        #else:
+    data["temp_ship"].append([row,col])
+    if(len(data["temp_ship"])==3):
+        placeShip(data)
     return 
 
 
@@ -409,6 +430,8 @@ if __name__ == "__main__":
     test.testIsHorizontal()
     test.testGetClickedCell()
     test.testDrawShip()
+    test.testShipIsValid()
+    
 
     
     
