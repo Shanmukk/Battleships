@@ -244,6 +244,13 @@ Parameters: dict mapping strs to values ; mouse event object
 Returns: list of ints
 '''
 def getClickedCell(data, event):
+#    lst = []
+    x,y = int(event.x / data["cell size"]), int(event.y / data["cell size"])
+#    lst.append(y)
+#    lst.append(x)
+        #x = int(event.x / data["cell_size"])
+        #lst.append(x)
+    return [y,x]
     return 
 
 
@@ -396,6 +403,7 @@ if __name__ == "__main__":
     test.testDrawGrid()
     test.testIsVertical()
     test.testIsHorizontal()
+    test.testGetClickedCell()
 
     
     
