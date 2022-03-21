@@ -30,13 +30,13 @@ def makeModel(data):
     data["no.of cols"]=10
     data["board size"]=500
     data["no.of ships"]=5
-  #  data["temp_ship"]=test.testShip()
+    #data["temp_ship"]=test.testShip()
     data["temp_ship"]=[]
     data["cell size"]=data["board size"]/data["no.of rows"]
     data["no.of_userships"]=0
     data["computer"]=emptyGrid(data["no.of rows"],data["no.of cols"])
     data["user"]=emptyGrid(data["no.of rows"],data["no.of cols"])
-#    data["user"]=test.testGrid()
+    data["user"]=test.testGrid()
     data["computer"]=addShips(data["computer"],data["no.of ships"])
     #data["user"]=user
 #   data["computer"]=computer
@@ -261,7 +261,11 @@ Parameters: dict mapping strs to values ; Tkinter canvas; 2D list of ints
 Returns: None
 '''
 def drawShip(data, canvas, ship):
+    for i in range(len(ship)):
+        x,y=ship[i][0],ship[i][1]
+        canvas.create_rectangle(y*data["cell size"],x* data["cell size"],(y+1)* data["cell size"],(x+1)* data["cell size"],fill="white")
     return
+
 
 
 '''
@@ -404,6 +408,7 @@ if __name__ == "__main__":
     test.testIsVertical()
     test.testIsHorizontal()
     test.testGetClickedCell()
+    test.testDrawShip()
 
     
     
