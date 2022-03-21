@@ -25,8 +25,22 @@ Parameters: dict mapping strs to values
 Returns: None
 '''
 def makeModel(data):
-    return
-
+    data["rows"]=10
+    data["col"]=10
+    data["board_size"]=500
+    data["cell_size"]=50
+    data["numShips"]=5
+    #data["temp_ship"] = test.testShip()
+    data["temp_ship"] = []
+    data["user_ships"] = 0
+    user_board = emptyGrid(data["rows"], data["col"])
+    #user_board = test.testGrid()
+    com_board = emptyGrid(data["rows"], data["col"])
+    com_board = addShips(com_board, data["numShips"])
+    data["user_board"]=user_board
+    data["com_board"]=com_board
+    return 
+    
 
 '''
 makeView(data, userCanvas, compCanvas)
@@ -34,6 +48,9 @@ Parameters: dict mapping strs to values ; Tkinter canvas ; Tkinter canvas
 Returns: None
 '''
 def makeView(data, userCanvas, compCanvas):
+    drawGrid(data,userCanvas,data["user_board"],showShips=True) 
+    drawGrid(data,compCanvas,data["com_board"],showShips=True)
+    drawShip(data,userCanvas,data["temp_ship"]) 
     return
 
 
@@ -52,6 +69,9 @@ Parameters: dict mapping strs to values ; mouse event object ; 2D list of ints
 Returns: None
 '''
 def mousePressed(data, event, board):
+    press = getClickedCell(data,event)
+    if board == "user":
+        clickUserBoard(data,press[0],press[1])
     pass
 
 #### WEEK 1 ####
@@ -62,7 +82,9 @@ Parameters: int ; int
 Returns: 2D list of ints
 '''
 def emptyGrid(rows, cols):
-    return
+    arr=[[1]*(cols) for _ in range(rows)] 
+    return (arr)
+    
 
 
 '''
@@ -71,7 +93,22 @@ Parameters: no parameters
 Returns: 2D list of ints
 '''
 def createShip():
-    return
+    len_ship = 3
+    orientation = random.randint(0,1)
+    if orientation == 0:
+        row_ship = [random.randint(1,8)]*len_ship
+        col = random.randint(1,8 - 1)
+        col_ship = list(range(col -1, col + 2))
+        c = zip(row_ship, col_ship)
+    else:
+        col_ship = [random.randint(1,8)]*len_ship
+        row = random.randint(1,8 - 1)
+        row_ship = list(range(row - 1, row + 2))
+        c = zip(row_ship, col_ship)
+    return list(c)
+
+
+    #return
 
 
 '''
@@ -80,7 +117,17 @@ Parameters: 2D list of ints ; 2D list of ints
 Returns: bool
 '''
 def checkShip(grid, ship):
-    return
+    count=0
+    for i in range(len(ship)):
+        s = ship[i] 
+        row=s[0]
+        col=s[1] 
+        if(grid[row][col]!=EMPTY_UNCLICKED):
+            count = 1 
+    if(count==1): 
+        return False 
+    return True
+
 
 
 '''
@@ -89,7 +136,16 @@ Parameters: 2D list of ints ; int
 Returns: 2D list of ints
 '''
 def addShips(grid, numShips):
-    return
+    count=0 
+    while count<numShips: 
+        ship = createShip() 
+        if checkShip(grid,ship) == True: 
+            for i in ship: 
+                r = i[0] 
+                c = i[1] 
+                grid[r][c] = SHIP_UNCLICKED 
+            count = count + 1 
+    return grid
 
 
 '''
@@ -98,6 +154,11 @@ Parameters: dict mapping strs to values ; Tkinter canvas ; 2D list of ints ; boo
 Returns: None
 '''
 def drawGrid(data, canvas, grid, showShips):
+    for i in range(data["rows"]):
+        for d in range(data["col"]):
+            canvas.create_rectangle(d*data["cell_size"],i*data["cell_size"],data["cell_size"]*(d+1),data["cell_size"]*(i+1),fill="blue")
+            if (grid[i][d]==SHIP_UNCLICKED): 
+                canvas.create_rectangle(d*data["cell_size"],i*data["cell_size"],data["cell_size"]*(d+1),data["cell_size"]*(i+1),fill="yellow") 
     return
 
 
@@ -109,7 +170,19 @@ Parameters: 2D list of ints
 Returns: bool
 '''
 def isVertical(ship):
-    return
+    l = [ ] 
+    col = ship[0][1] 
+    count = 0 
+    for i in range(len(ship)): 
+        if(ship[i][1] == col): 
+            count += 1 
+            l.append(ship[i][0])  
+            if count == (len(ship)): 
+                if max(l)-min(l) == len(ship)-1: 
+                    return True 
+                return False 
+        else:
+            return False
 
 
 '''
@@ -118,7 +191,20 @@ Parameters: 2D list of ints
 Returns: bool
 '''
 def isHorizontal(ship):
-    return
+    l = [ ] 
+    row = ship[0][0]
+    count = 0                         
+    for i in range(len(ship)): 
+        if(ship[i][0] == row): 
+            count += 1 
+            l.append(ship[i][1])   
+            if count == (len(ship)): 
+                if max(l)-min(l) == 2: 
+                    return True 
+                return False
+        else:
+            return False
+   
 
 
 '''
@@ -127,7 +213,9 @@ Parameters: dict mapping strs to values ; mouse event object
 Returns: list of ints
 '''
 def getClickedCell(data, event):
-    return
+    x,y = int(event.x / data["cell_size"]), int(event.y / data["cell_size"]) 
+    return [y,x]
+    
 
 
 '''
@@ -136,6 +224,8 @@ Parameters: dict mapping strs to values ; Tkinter canvas; 2D list of ints
 Returns: None
 '''
 def drawShip(data, canvas, ship):
+    for i in ship:
+        canvas.create_rectangle(i[1]*data["cell_size"],i[0]*data["cell_size"],data["cell_size"]*(i[1]+1),data["cell_size"]*(i[0]+1),fill="white")
     return
 
 
@@ -145,8 +235,10 @@ Parameters: 2D list of ints ; 2D list of ints
 Returns: bool
 '''
 def shipIsValid(grid, ship):
-    return
-
+    if len(ship) == 3:
+        if checkShip(grid,ship) and isVertical(ship) or isHorizontal(ship):
+            return True
+    return False
 
 '''
 placeShip(data)
@@ -154,7 +246,15 @@ Parameters: dict mapping strs to values
 Returns: None
 '''
 def placeShip(data):
+    if(shipIsValid(data["user_board"],data["temp_ship"])):
+        for i in range(len(data["temp_ship"])):
+            data["user_board"][data["temp_ship"][i][0]][data["temp_ship"][i][1]] = SHIP_UNCLICKED  
+        data["user_ships"] += 1
+    else:
+        print("Ship is not valid")
+    data["temp_ship"] = [] 
     return
+    
 
 
 '''
@@ -163,6 +263,15 @@ Parameters: dict mapping strs to values ; int ; int
 Returns: None
 '''
 def clickUserBoard(data, row, col):
+    if data["user_ships"] == 5:
+        print("You can start the game")
+        return
+    for i in (data["temp_ship"]):
+        if([row,col] == i):
+            return
+    data["temp_ship"].append([row,col])
+    if(len(data["temp_ship"])==3):
+        placeShip(data)
     return
 
 
@@ -268,6 +377,17 @@ def runSimulation(w, h):
 
 # This code runs the test cases to check your work
 if __name__ == "__main__":
+    '''test.testEmptyGrid()
+    test.testCreateShip()
+    test.testCheckShip()
+    test.testAddShips()
+    test.testMakeModel()
+    test.testDrawGrid()
+    test.testIsVertical()
+    test.testIsHorizontal()
+    test.testGetClickedCell()
+    test.testDrawShip()
+    test.testShipIsValid()'''
 
     ## Finally, run the simulation to test it manually ##
-    # runSimulation(500, 500)
+    runSimulation(500, 500)
