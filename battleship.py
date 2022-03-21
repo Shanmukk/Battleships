@@ -51,7 +51,7 @@ Returns: None
 def makeView(data, userCanvas, compCanvas):
     drawGrid(data,userCanvas,data["user"],showShips=True)
     drawGrid(data,compCanvas,data["computer"],showShips=True)
-    #drawShip(data,userCanvas,data["temp_ship"])
+    drawShip(data,userCanvas,data["temp_ship"])
     return
 
 '''
@@ -69,6 +69,9 @@ Parameters: dict mapping strs to values ; mouse event object ; 2D list of ints
 Returns: None
 '''
 def mousePressed(data, event, board):
+    inp1=getClickedCell(data,event)
+    if board=="user":
+        clickUserBoard(data,inp1[0],inp1[1])
     pass
 
 #### WEEK 1 ####
@@ -420,7 +423,7 @@ def runSimulation(w, h):
 # This code runs the test cases to check your work
 if __name__ == "__main__":
 
-    test.testEmptyGrid()
+    '''test.testEmptyGrid()
     test.testCreateShip()
     test.testCheckShip()
     test.testAddShips()
@@ -430,8 +433,8 @@ if __name__ == "__main__":
     test.testIsHorizontal()
     test.testGetClickedCell()
     test.testDrawShip()
-    test.testShipIsValid()
-    
+    test.testShipIsValid()'''
+
 
     
     
