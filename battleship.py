@@ -40,6 +40,7 @@ def makeModel(data):
     data["computer"]=addShips(data["computer"],data["no.of ships"])
     #data["user"]=user
 #   data["computer"]=computer
+    data["win"]=None
     return 
 
 
@@ -52,6 +53,8 @@ def makeView(data, userCanvas, compCanvas):
     drawGrid(data,userCanvas,data["user"],showShips=True)
     drawGrid(data,compCanvas,data["computer"],showShips=False)
     drawShip(data,userCanvas,data["temp_ship"])
+    drawGameOver(data,userCanvas)
+    drawGameOver(data,compCanvas)
     return
 
 '''
@@ -69,12 +72,13 @@ Parameters: dict mapping strs to values ; mouse event object ; 2D list of ints
 Returns: None
 '''
 def mousePressed(data, event, board):
-    inp1=getClickedCell(data,event)
-    if board=="user":
-        clickUserBoard(data,inp1[0],inp1[1])
-    else:
-        runGameTurn(data,inp1[0],inp1[1])
-    pass
+    if data["win"]==None:
+        inp1=getClickedCell(data,event)
+        if board=="user":
+            clickUserBoard(data,inp1[0],inp1[1])
+        else:
+            runGameTurn(data,inp1[0],inp1[1])
+        pass
 
 #### WEEK 1 ####
 
@@ -340,6 +344,8 @@ def updateBoard(data, board, row, col, player):
         board[row][col]= SHIP_CLICKED
     if(board[row][col]==EMPTY_UNCLICKED):
         board[row][col]=EMPTY_CLICKED
+    if (isGameOver(board)==True):
+        data["win"]=player
     return
 
 
@@ -378,8 +384,11 @@ Parameters: 2D list of ints
 Returns: bool
 '''
 def isGameOver(board):
-    return
-
+    for row in range(len(board)):
+        for col in range(len(board)):
+            if(board[row][col]==SHIP_UNCLICKED): 
+                return False
+    return True
 
 '''
 drawGameOver(data, canvas)
@@ -387,6 +396,10 @@ Parameters: dict mapping strs to values ; Tkinter canvas
 Returns: None
 '''
 def drawGameOver(data, canvas):
+    if data["win"]=="user":
+        canvas.create_text(100,100,text="User is the Winner",font="Times 30",anchor="center")
+    elif(data["win"]=="computer"):
+        canvas.create_text(100,100,text="Computer is the Winner",font="Times 30",anchor="center")
     return
 
 
@@ -446,7 +459,7 @@ def runSimulation(w, h):
 # This code runs the test cases to check your work
 if __name__ == "__main__":
 
-    '''test.testEmptyGrid()
+    test.testEmptyGrid()
     test.testCreateShip()
     test.testCheckShip()
     test.testAddShips()
@@ -458,7 +471,8 @@ if __name__ == "__main__":
     test.testDrawShip()
     test.testShipIsValid()
     test.testUpdateBoard()
-    test.testGetComputerGuess()'''
+    test.testGetComputerGuess()
+    test.testIsGameOver()
 
 
 
