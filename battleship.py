@@ -66,6 +66,8 @@ Parameters: dict mapping strs to values ; key event object
 Returns: None
 '''
 def keyPressed(data, event):
+    if event.keycode==13:
+        makeModel(data)
     pass
 
 
@@ -219,7 +221,20 @@ Parameters: 2D list of ints
 Returns: bool
 '''
 def isHorizontal(ship):
-    l = [ ] 
+    ship.sort()
+    row = ship[0][0]
+    count = 0
+    for i in range(len(ship)):
+        if ship[i][0] == row:
+            count = count+1
+            if count == len(ship):
+                if ship[1][1] - ship[0][1] == 1 and ship[2][1] - ship[1][1] == 1:
+                    return True
+                return False
+        else:
+            return False
+
+    '''l = [ ] 
     row = ship[0][0]
     count = 0                         
     for i in range(len(ship)): 
@@ -231,7 +246,7 @@ def isHorizontal(ship):
                     return True 
                 return False
         else:
-            return False
+            return False'''
    
 
 
@@ -374,11 +389,14 @@ Returns: None
 '''
 def drawGameOver(data, canvas):
     if data["winner"] == "user_board":
-        canvas.create_text(250,250,text="User is the winner", fill = "black", font = "times 30", anchor = "center")
+        canvas.create_text(250,200,text="User is the winner", fill = "black", font = "times 30", anchor = "center")
+        canvas.create_text(250,250,text="To Restart Press Enter", fill = "black", font = "times 30", anchor = "center")
     elif data["winner"] == "com_board":
-        canvas.create_text(250,250,text="Computer is the winner",fill = "black", font = "times 30" , anchor = "center")
+        canvas.create_text(250,200,text="Computer is the winner",fill = "black", font = "times 30" , anchor = "center")
+        canvas.create_text(250,250,text="To Restart Press Enter", fill = "black", font = "times 30", anchor = "center")
     elif data["winner"] == "draw":
-        canvas.create_text(250,250,text="Out of moves-It's Draw",fill = "black", font = "times 30" , anchor = "center")
+        canvas.create_text(250,200,text="Out of moves-It's Draw",fill = "black", font = "times 30" , anchor = "center")
+        canvas.create_text(250,250,text="To Restart Press Enter", fill = "black", font = "times 30", anchor = "center")
     return
 
 

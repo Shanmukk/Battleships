@@ -1,22 +1,17 @@
-def isVertical(ship):
+def isHorizantal(ship):
     ship.sort()
-    #print(ship)
-    #k = []
-    col = ship[0][1]
+    row = ship[0][0]
     count = 0
     for i in range(len(ship)):
-        if ship[i][1] == col:
+        if ship[i][0] == row:
             count = count+1
-            #k.append(ship[i][0])
-            #k.sort()
             if count == len(ship):
-                if ship[1][0] - ship[0][0] == 1 and ship[2][0] - ship[1][0] == 1:
-                #if k[1] - k[0] == 1 and k[2] - k[1] == 1:
+                if ship[1][1] - ship[0][1] == 1 and ship[2][1] - ship[1][1] == 1:
                     return True
                 return False
         else:
             return False
-print(isVertical([[1,1], [2,1], [0,1]]))
+print(isHorizantal([[1,0], [0,1], [1,2]]))
             
 
                 
