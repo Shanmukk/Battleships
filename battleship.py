@@ -379,7 +379,6 @@ def drawGameOver(data, canvas):
         canvas.create_text(250,250,text="Computer is the winner",fill = "black", font = "times 30" , anchor = "center")
     elif data["winner"] == "draw":
         canvas.create_text(250,250,text="Out of moves-It's Draw",fill = "black", font = "times 30" , anchor = "center")
-
     return
 
 
