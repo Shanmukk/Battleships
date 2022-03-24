@@ -317,11 +317,12 @@ Parameters: dict mapping strs to values ; int ; int
 Returns: None
 '''
 def runGameTurn(data, row, col):
-    if(data["com_board"][row][col]== SHIP_CLICKED or data["com_board"][row][col]==EMPTY_CLICKED): 
+    if(data["com_board"][row][col] == SHIP_CLICKED or data["com_board"][row][col] == EMPTY_CLICKED): 
         return 
     else: 
         updateBoard(data,data["com_board"] ,row,col,"user")
-        #getComputerGuess()
+    cell = getComputerGuess(data["user_board"]) 
+    updateBoard(data,data["user_board"],cell[0],cell[1],"comp")
     return
 
 
@@ -331,7 +332,14 @@ Parameters: 2D list of ints
 Returns: list of ints
 '''
 def getComputerGuess(board):
-    return
+    row = random.randint(0,9) 
+    col = random.randint(0,9) 
+    while board[row][col] == SHIP_CLICKED or board[row][col] == EMPTY_CLICKED: 
+        row = random.randint(0,9) 
+        col = random.randint(0,9) 
+    if board[row][col] == SHIP_UNCLICKED or board[row][col] == EMPTY_UNCLICKED: 
+        return [row,col]
+
 
 
 '''
@@ -340,6 +348,7 @@ Parameters: 2D list of ints
 Returns: bool
 '''
 def isGameOver(board):
+    
     return
 
 
@@ -407,7 +416,7 @@ def runSimulation(w, h):
 
 # This code runs the test cases to check your work
 if __name__ == "__main__":
-    '''test.testEmptyGrid()
+    test.testEmptyGrid()
     test.testCreateShip()
     test.testCheckShip()
     test.testAddShips()
@@ -418,7 +427,8 @@ if __name__ == "__main__":
     test.testGetClickedCell()
     test.testDrawShip()
     test.testShipIsValid()
-    test.testUpdateBoard()'''
+    test.testUpdateBoard()
+    test.testGetComputerGuess()
 
     ## Finally, run the simulation to test it manually ##
     runSimulation(500, 500)
