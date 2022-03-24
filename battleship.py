@@ -221,14 +221,17 @@ def isVertical(ship):
         if (ship[i][1] == column):
             count+=1
             lst1.append(ship[i][0])
+            lst1.sort()
+            if(count==len(ship)):
+            #if((max(lst1)-min(lst1))==(len(ship))-1):
+                if(lst1[1]-lst1[0]==1 and lst1[2]-lst1[1]==1):
+                    return True
+                return False
         else:
             return False
 #    print(lst1)
-    if (count==len(ship)):
-        if((max(lst1)-min(lst1))==(len(ship))-1):
-            return True
-        else: 
-            return False
+    #lst1.sort()
+    
 #    return
 
 
@@ -247,15 +250,21 @@ def isHorizontal(ship):
         if (ship[i][0] == row):
             count+=1
             lst1.append(ship[i][1])
+            lst1.sort()
+            if(count==len(ship)):
+            #if((max(lst1)-min(lst1))==(len(ship))-1):
+                if(lst1[1]-lst1[0]==1 and lst1[2]-lst1[1]==1):
+                    return True
+                return False
         else:
             return False
 #    print(lst1)
-    if (count==len(ship)):
+    '''if (count==len(ship)):
         if((max(lst1)-min(lst1))==(len(ship))-1):
             return True
         else: 
             return False
-    return
+    return'''
     
 
 '''
@@ -295,7 +304,7 @@ Returns: bool
 '''
 def shipIsValid(grid, ship):
     if(len(ship)==3):
-        if(checkShip(grid,ship) and isVertical(ship) or isHorizontal(ship)):
+        if(checkShip(grid,ship) and (isVertical(ship) or isHorizontal(ship))):
             return True
     return False
 
@@ -328,13 +337,14 @@ def clickUserBoard(data, row, col):
         print("You can start the game")
         return
     for i in (data["temp_ship"]):
-        if([row,col] == i):
+        if(i==[row,col]):
             return
         #else:
     data["temp_ship"].append([row,col])
     if(len(data["temp_ship"])==3):
         placeShip(data)
     return 
+
 
 
 ### WEEK 3 ###
