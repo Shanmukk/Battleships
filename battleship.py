@@ -164,17 +164,16 @@ Parameters: 2D list of ints
 Returns: bool
 '''
 def isVertical(ship):
-    l = [ ] 
-    col = ship[0][1] 
-    count = 0 
-    for i in range(len(ship)): 
-        if(ship[i][1] == col): 
-            count += 1 
-            l.append(ship[i][0])  
-            if count == (len(ship)): 
-                if max(l)-min(l) == 2: 
-                    return True 
-                return False 
+    ship.sort()
+    col = ship[0][1]
+    count = 0
+    for i in range(len(ship)):
+        if ship[i][1] == col:
+            count = count+1
+            if count == len(ship):
+                if ship[1][0] - ship[0][0] == 1 and ship[2][0] - ship[1][0] == 1:
+                    return True
+                return False
         else:
             return False
 
@@ -185,19 +184,18 @@ Parameters: 2D list of ints
 Returns: bool
 '''
 def isHorizontal(ship):
-    l = [ ] 
+    ship.sort()
     row = ship[0][0]
-    count = 0                         
-    for i in range(len(ship)): 
-        if(ship[i][0] == row): 
-            count += 1 
-            l.append(ship[i][1])   
-            if count == (len(ship)): 
-                if max(l)-min(l) == 2: 
-                    return True 
+    count = 0
+    for i in range(len(ship)):
+        if ship[i][0] == row:
+            count = count+1
+            if count == len(ship):
+                if ship[1][1] - ship[0][1] == 1 and ship[2][1] - ship[1][1] == 1:
+                    return True
                 return False
         else:
-            return False
+            return False    
    
 
 
