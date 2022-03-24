@@ -41,6 +41,7 @@ def makeModel(data):
     #data["user"]=user
 #   data["computer"]=computer
     data["win"]=None
+    #data["win"]="computer"
     return 
 
 
@@ -54,7 +55,7 @@ def makeView(data, userCanvas, compCanvas):
     drawGrid(data,compCanvas,data["computer"],showShips=False)
     drawShip(data,userCanvas,data["temp_ship"])
     drawGameOver(data,userCanvas)
-    drawGameOver(data,compCanvas)
+    #drawGameOver(data,compCanvas)
     return
 
 '''
@@ -344,7 +345,7 @@ def updateBoard(data, board, row, col, player):
         board[row][col]= SHIP_CLICKED
     if(board[row][col]==EMPTY_UNCLICKED):
         board[row][col]=EMPTY_CLICKED
-    if (isGameOver(board)==True):
+    if (isGameOver(board)):
         data["win"]=player
     return
 
@@ -397,9 +398,9 @@ Returns: None
 '''
 def drawGameOver(data, canvas):
     if data["win"]=="user":
-        canvas.create_text(100,100,text="User is the Winner",font="Times 30",anchor="center")
+        canvas.create_text(250,80,text="User is the Winner",fill="black",font="Times 30")
     elif(data["win"]=="computer"):
-        canvas.create_text(100,100,text="Computer is the Winner",font="Times 30",anchor="center")
+        canvas.create_text(250,80,text="Computer is the Winner",fill="black",font="Times 30")
     return
 
 
