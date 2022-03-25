@@ -49,7 +49,7 @@ Returns: None
 '''
 def makeView(data, userCanvas, compCanvas):
     drawGrid(data,userCanvas,data["user_board"],showShips=True) 
-    drawGrid(data,compCanvas,data["com_board"],showShips=True)
+    drawGrid(data,compCanvas,data["com_board"],showShips=False)
     drawShip(data,userCanvas,data["temp_ship"]) 
     return
 
@@ -72,6 +72,8 @@ def mousePressed(data, event, board):
     press = getClickedCell(data,event)
     if board == "user":
         clickUserBoard(data,press[0],press[1])
+    else:
+        runGameTurn(data,press[0],press[1])
     pass
 
 #### WEEK 1 ####
@@ -156,9 +158,16 @@ Returns: None
 def drawGrid(data, canvas, grid, showShips):
     for i in range(data["rows"]):
         for d in range(data["col"]):
-            canvas.create_rectangle(d*data["cell_size"],i*data["cell_size"],data["cell_size"]*(d+1),data["cell_size"]*(i+1),fill="blue")
-            if (grid[i][d]==SHIP_UNCLICKED): 
+            if grid[i][d] == EMPTY_UNCLICKED:
+                canvas.create_rectangle(d*data["cell_size"],i*data["cell_size"],data["cell_size"]*(d+1),data["cell_size"]*(i+1),fill="blue")
+            if grid[i][d]==SHIP_UNCLICKED: 
                 canvas.create_rectangle(d*data["cell_size"],i*data["cell_size"],data["cell_size"]*(d+1),data["cell_size"]*(i+1),fill="yellow") 
+            elif grid[i][d] == SHIP_CLICKED:
+                canvas.create_rectangle(d*data["cell_size"],i*data["cell_size"],data["cell_size"]*(d+1),data["cell_size"]*(i+1),fill="red") 
+            elif grid[i][d] == EMPTY_CLICKED:
+                canvas.create_rectangle(d*data["cell_size"],i*data["cell_size"],data["cell_size"]*(d+1),data["cell_size"]*(i+1),fill="white")
+            if (grid[i][d] == SHIP_UNCLICKED) and showShips == False:   
+                canvas.create_rectangle(d*data["cell_size"],i*data["cell_size"],data["cell_size"]*(d+1),data["cell_size"]*(i+1),fill="blue") 
     return
 
 
@@ -170,7 +179,19 @@ Parameters: 2D list of ints
 Returns: bool
 '''
 def isVertical(ship):
-    l = [ ] 
+    ship.sort()
+    col = ship[0][1]
+    count = 0
+    for i in range(len(ship)):
+        if ship[i][1] == col:
+            count = count+1
+            if count == len(ship):
+                if ship[1][0] - ship[0][0] == 1 and ship[2][0] - ship[1][0] == 1:
+                    return True
+                return False
+        else:
+            return False
+    '''l = [ ] 
     col = ship[0][1] 
     count = 0 
     for i in range(len(ship)): 
@@ -182,7 +203,7 @@ def isVertical(ship):
                     return True 
                 return False 
         else:
-            return False
+            return False'''
 
 
 '''
@@ -283,6 +304,10 @@ Parameters: dict mapping strs to values ; 2D list of ints ; int ; int ; str
 Returns: None
 '''
 def updateBoard(data, board, row, col, player):
+    if board[row][col] == SHIP_UNCLICKED:
+        board[row][col] = SHIP_CLICKED
+    if board[row][col] == EMPTY_UNCLICKED:
+        board[row][col] = EMPTY_CLICKED
     return
 
 
@@ -292,6 +317,12 @@ Parameters: dict mapping strs to values ; int ; int
 Returns: None
 '''
 def runGameTurn(data, row, col):
+    if(data["com_board"][row][col] == SHIP_CLICKED or data["com_board"][row][col] == EMPTY_CLICKED): 
+        return 
+    else: 
+        updateBoard(data,data["com_board"] ,row,col,"user")
+    cell = getComputerGuess(data["user_board"]) 
+    updateBoard(data,data["user_board"],cell[0],cell[1],"comp")
     return
 
 
@@ -301,7 +332,14 @@ Parameters: 2D list of ints
 Returns: list of ints
 '''
 def getComputerGuess(board):
-    return
+    row = random.randint(0,9) 
+    col = random.randint(0,9) 
+    while board[row][col] == SHIP_CLICKED or board[row][col] == EMPTY_CLICKED: 
+        row = random.randint(0,9) 
+        col = random.randint(0,9) 
+    if board[row][col] == SHIP_UNCLICKED or board[row][col] == EMPTY_UNCLICKED: 
+        return [row,col]
+
 
 
 '''
@@ -310,6 +348,7 @@ Parameters: 2D list of ints
 Returns: bool
 '''
 def isGameOver(board):
+    
     return
 
 
@@ -377,7 +416,7 @@ def runSimulation(w, h):
 
 # This code runs the test cases to check your work
 if __name__ == "__main__":
-    '''test.testEmptyGrid()
+    test.testEmptyGrid()
     test.testCreateShip()
     test.testCheckShip()
     test.testAddShips()
@@ -387,7 +426,9 @@ if __name__ == "__main__":
     test.testIsHorizontal()
     test.testGetClickedCell()
     test.testDrawShip()
-    test.testShipIsValid()'''
+    test.testShipIsValid()
+    test.testUpdateBoard()
+    test.testGetComputerGuess()
 
     ## Finally, run the simulation to test it manually ##
     runSimulation(500, 500)
